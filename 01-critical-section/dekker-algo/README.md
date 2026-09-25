@@ -77,7 +77,7 @@ want_cs[current_thread_index] = False
 **Principle:** same principles as the **Third Attempt**, including a **state alternation** in case both processes get held up in the loop checking the state of the opposing process.
 
 **Pseudocode:**
-```
+```text
 Global Variables: want_cs = [False, False]
 
 <non-critical-section>
@@ -87,9 +87,8 @@ while want_cs[other_thread_index] == True:
     want_cs[current_thread_index] = True
 <critical-section>
 want_cs[current_thread_index] = False
-
-
 ```
+
 **Explanation:** the process indicates its intention to access the critical section and checks whether the other process also wants to access it. As in the previous case, due to interleaving it can happen that both processes indicate they want to access the critical section before either of them has executed the pre-protocol statements, and therefore both get trapped inside the loop indefinitely. To solve this, the process inside the loop **alternates its state**, changing the boolean value associated with its identifier in `want_cs`. In this way, **the deadlock problem is eliminated**, since *at some point during execution* the interleaving will cause one of the processes to evaluate the condition while the other indicates its intention not to access the section, allowing it to enter.
 
 **Problem:** It violates **Bounded Waiting (Dijkstra)**; the **rule** established to decide the **order of preference** among processes **is not defined within a finite number of steps**. In addition, what is known as **livelock** occurs, where the processes/threads carry out a continuous mutual change of state in response to one another without achieving any progress.
@@ -99,7 +98,7 @@ want_cs[current_thread_index] = False
 **Principle:** application of the principles of the global turn variable and boolean access variables to the critical section.
 
 **Pseudocode:**
-```
+```text
 Global Variables: turn = 0, want_cs = [False, False]
 
 <non-critical-section>
@@ -198,7 +197,7 @@ want_cs[current_thread_index] = False
 **Principio:** mismos principios que el **Tercer Intento**, incluyendo una alternancia del estado en caso de que ambos procesos queden retenidos en el bucle de verificación del estado del proceso opuesto.
 
 **Pseudocódigo:**
-```
+```text
 Global Variables: want_cs = [False, False]
 
 <non-critical-section>
@@ -208,10 +207,9 @@ while want_cs[other_thread_index] == True:
     want_cs[current_thread_index] = True
 <critical-section>
 want_cs[current_thread_index] = False
-
-
 ```
-**Explicación:** el proceso indica su intención de querer acceder a la sección crítica y comprueba si el otro proceso quiere o no acceder también a ella. Como en el caso anterior, a causa del intercalado se puede dar el caso de que ambos procesos indiquen que quieren acceder a la sección crítica antes de que ninguno de los dos haya ejecutado las sentencias del preprotocolo y por tanto ambos queden atrapados dentro del bucle de forma indefinida. Para solventar esto último el proceso dentro del bucle alterna su estado, cambiando el valor de booleano asociado a su identificador en `want_cs`. De esta manera, **se consigue eliminar el problema del interbloqueo (deadlock)** ya que en *algún punto de la ejecución* el intercalado hará que uno de los procesos evalue la condición cuando el otro indica su intención de no acceder a la sección, permitiéndole la entrada a la misma.
+
+**Explicación:** el proceso indica su intención de querer acceder a la sección crítica y comprueba si el otro proceso quiere o no acceder también a ella. Como en el caso anterior, a causa del intercalado se puede dar el caso de que ambos procesos indiquen que quieren acceder a la sección crítica antes de que ninguno de los dos haya ejecutado las sentencias del preprotocolo y por tanto ambos queden atrapados dentro del bucle de forma indefinida. Para solventar esto último el proceso dentro del bucle alterna su estado, cambiando el valor de booleano asociado a su identificador en `want_cs`. De esta manera, **se consigue eliminar el problema del interbloqueo (deadlock)** ya que en *algún punto de la ejecución* el intercalado hará que uno de los procesos evalúe la condición cuando el otro indica su intención de no acceder a la sección, permitiéndole la entrada a la misma.
 
 **Problemática:** Incumple la **Espera Limitada (Dijkstra)**; la **regla** establecida para decidir el **orden de preferencia** de los procesos **no se define en un número finito de pasos**. Además se produce lo que se conoce como **bloqueo activo (livelock)**, donde los procesos/hilos llevan a cabo un continuo cambio de estado en respuesta mutua sin lograr ningún progreso.
 
@@ -220,13 +218,13 @@ want_cs[current_thread_index] = False
 **Principio:** aplicación de los principios de variable global de turno y variables booleanas de acceso a la sección crítica.
 
 **Pseudocódigo:**
-```
+```text
 Global Variables: turn = 0, want_cs = [False, False]
 
 <non-critical-section>
 want_cs[current_thread_index] = True
 while want_cs[other_thread_index] == True:
-    if turn != my_turn:     // my_trun will refer to the current thread id
+    if turn != my_turn:                             // my_turn will refer to the current thread id
         want_cs[current_thread_index] = False
         while turn != my_turn:
             await
